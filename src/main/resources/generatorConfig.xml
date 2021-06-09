@@ -5,13 +5,16 @@
 
 <generatorConfiguration>
     <properties resource="generatorConfig.properties"></properties>
-    
+
     <classPathEntry location="D:\\Software\mysql-8.0.21\\mysql-connector-java-8.0.21"/>
-    
+
     <context id="MySqlContext" targetRuntime="MyBatis3" defaultModelType="flat">
         <property name="beginningDelimiter" value="`"/>
         <property name="endingDelimiter" value="`"/>
         <property name="javaFileEncoding" value="UTF-8"/>
+
+        <!--生成mapper.xml时覆盖原文件-->
+        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin"/>
 
         <!-- 为模型生成序列化方法 -->
         <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
@@ -26,9 +29,10 @@
             <property name="suppressAllDate" value="true"/>
             <property name="addRemarkComments" value="true"/>
         </commentGenerator>
-        
+
         <!-- 配置数据库连接 -->
-        <jdbcConnection driverClass="${jdbc_driver}" connectionURL="${jdbc_url}" userId="${jdbc_user}" password="${jdbc_password}">
+        <jdbcConnection driverClass="${jdbc_driver}" connectionURL="${jdbc_url}" userId="${jdbc_user}"
+                        password="${jdbc_password}">
             <!-- 解决MySQL驱动升级到8.x后不生成指定数据库代码的问题 -->
             <property name="nullCatalogMeansCurrent" value="true"/>
         </jdbcConnection>
@@ -38,10 +42,36 @@
         <!-- 指定生成mapper.xml的路径 -->
         <sqlMapGenerator targetPackage="com.example.mall.mbg.mapper" targetProject="src\main\resources"/>
         <!-- 指定生成mapper接口的路径 -->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.example.mall.mbg.mapper" targetProject="src\main\java"/>
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.example.mall.mbg.mapper"
+                             targetProject="src\main\java"/>
 
-        <!-- 需要自动生成的全部表 -->
+        <!-- 需要自动生成全部表tableName设为% -->
+        <!--<table tableName="%">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>-->
+        <!--生成全部表tableName设为%-->
         <table tableName="pms_brand">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <!--后台用户表-->
+        <table tableName="ums_admin">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <!--后台用户角色表-->
+        <table tableName="ums_role">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <!--后台用户权限表-->
+        <table tableName="ums_permission">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="ums_admin_role_relation">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="ums_role_permission_relation">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="ums_admin_permission_relation">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
     </context>

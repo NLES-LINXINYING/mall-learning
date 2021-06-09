@@ -3,7 +3,6 @@ package com.example.mall.service.impl;
 import com.example.mall.common.api.CommonResult;
 import com.example.mall.service.RedisService;
 import com.example.mall.service.UmsMemberService;
-import io.netty.util.internal.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -44,6 +43,7 @@ public class UmsMemberServiceImpl implements UmsMemberService {
         for (int i = 0; i < 6; i++) {
             sb.append(random.nextInt(10));
         }
+        System.out.println("生成的验证码：" + sb);
 
         // 验证码绑定手机号存储到redis
         redisService.set(REDIS_KEY_PREFIX_AUTH_CODE + telephone, sb.toString());
@@ -68,6 +68,7 @@ public class UmsMemberServiceImpl implements UmsMemberService {
 
         String realAuthCode = redisService.get(REDIS_KEY_PREFIX_AUTH_CODE + telephone);
         boolean result = authCode.equals(realAuthCode);
+        System.out.println("输入的验证码：" + authCode + ", 服务器验证码：" + realAuthCode);
         if (result) {
             return CommonResult.success(null, "验证码校验成功");
         } else {

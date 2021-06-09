@@ -57,6 +57,7 @@ public class CommonResult<T> {
     public static <T> CommonResult<T> failed(IErrorCode errorCode) {
         return new CommonResult<T>(errorCode.getCode(), errorCode.getMessage(), null);
     }
+
     /**
      * @title: failed
      * @description: 失败返回结果

@@ -2,6 +2,8 @@ server:
   port: 8080
 
 spring:
+  application:
+    name: mall
   datasource:
     url: jdbc:mysql://localhost:3306/mall?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
     username: root
@@ -20,16 +22,48 @@ spring:
         min-idle: 0 # 连接池中的最小空闲连接
     timeout: 3000ms # 连接超时时间（毫秒）
 
-
 mybatis:
   mapper-locations:
     - classpath:mapper/*.xml
-    - classpath*:com/**/mapper/*.xml
+    - classpath*:com/**/mapper/*Mapper.xml
 
-    # 自定义 redis key
+# 自定义 redis key
 redis:
   key:
     prefix:
       authCode: "portal:authCode:"
     expire:
       authCode: 120 # 验证码超时时间
+
+# 自定义jwt key
+jwt:
+  tokenHeader: Authorization # JWT存储的请求头
+  secret: mySecret # JWT加解密使用的密钥
+  expiration: 604800 # JWT的超期限时间(60*60*24)
+  tokenHead: Bearer  # JWT负载中拿到开头
+
+## 不需要安全保护的资源路径
+#secure:
+#  ignored:
+#    urls: #安全路径白名单
+#      - /swagger-ui/index.html
+#      - /swagger-resources/**
+#      - /swagger/**
+#      - /**/v2/api-docs
+#      - /**/*.js
+#      - /**/*.css
+#      - /**/*.png
+#      - /**/*.ico
+#      - /webjars/springfox-swagger-ui/**
+#      - /druid/**
+#      - /actuator/**
+#      - /sso/**
+#      - /home/**
+
+## 自定义Swagger配置
+#swagger:
+#  enable: true
+#  application-name: ${spring.application.name}
+#  application-version: 1.0
+#  application-description: mall电商平台项目demo
+#  try-host: http://localhost:${server.port}

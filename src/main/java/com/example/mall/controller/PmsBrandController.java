@@ -4,12 +4,13 @@ import com.example.mall.common.api.CommonPage;
 import com.example.mall.common.api.CommonResult;
 import com.example.mall.mbg.model.PmsBrand;
 import com.example.mall.service.PmsBrandService;
-import com.mysql.cj.log.Log;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,6 +36,7 @@ public class PmsBrandController {
     @ApiOperation("获取所有品牌列表")
     @RequestMapping(value = "/listAll", method = RequestMethod.GET)
     @ResponseBody
+    @PreAuthorize("hasAuthority('pms:brand:read')")
     public CommonResult<List<PmsBrand>> getBrandList() {
         return CommonResult.success(brandService.listAllBrand());
     }
@@ -42,6 +44,7 @@ public class PmsBrandController {
     @ApiOperation("添加品牌")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
+    @PreAuthorize("hasAuthority('pms:brand:create')")
     public CommonResult createBrand(@RequestBody PmsBrand pmsBrand) {
         CommonResult commonResult;
         int count = brandService.createBrand(pmsBrand);
@@ -58,6 +61,7 @@ public class PmsBrandController {
     @ApiOperation("更新指定id品牌信息")
     @RequestMapping("/update/{id}")
     @ResponseBody
+    @PreAuthorize("hasAuthority('pms:brand:update')")
     public CommonResult updateBrand(@PathVariable("id") Long id, @RequestBody PmsBrand pmsBrand) {
         CommonResult commonResult;
         int count = brandService.updateBrand(id, pmsBrand);
@@ -74,6 +78,7 @@ public class PmsBrandController {
     @ApiOperation("删除指定id品牌")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     @ResponseBody
+    @PreAuthorize("hasAuthority('pms:brand:delete')")
     public CommonResult deleteBrand(@PathVariable("id") Long id) {
         int count = brandService.deleteBrand(id);
         if (count == 1) {
@@ -89,7 +94,7 @@ public class PmsBrandController {
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     public CommonResult<CommonPage<PmsBrand>> listBrand(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                                                  @RequestParam(value = "pageSize", defaultValue = "3") Integer pageSize) {
+                                                        @RequestParam(value = "pageSize", defaultValue = "3") Integer pageSize) {
         List<PmsBrand> brandList = brandService.listBrand(pageNum, pageSize);
         return CommonResult.success(CommonPage.restPage(brandList));
     }

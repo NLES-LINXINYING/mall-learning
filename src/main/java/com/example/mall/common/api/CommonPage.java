@@ -1,7 +1,7 @@
 package com.example.mall.common.api;
 
-import org.springframework.data.domain.Page;
 import com.github.pagehelper.PageInfo;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 

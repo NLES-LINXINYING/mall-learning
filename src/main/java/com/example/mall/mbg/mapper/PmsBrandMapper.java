@@ -2,9 +2,9 @@ package com.example.mall.mbg.mapper;
 
 import com.example.mall.mbg.model.PmsBrand;
 import com.example.mall.mbg.model.PmsBrandExample;
-import io.swagger.annotations.ApiModelProperty;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface PmsBrandMapper {
     long countByExample(PmsBrandExample example);
